@@ -29,8 +29,9 @@ namespace HoloFaceSamples
         /// <summary>
         ///     Initialize Service and add service.
         /// </summary>
-        public static async Task InitizlizeServiceAsync(SetMediaCaptureObjectAsync action)
+        public static async Task InitializeServiceAsync(SetMediaCaptureObjectAsync action)
         {
+            System.Diagnostics.Debug.WriteLine("hoge");
             var devices = await DeviceInformation.FindAllAsync(DeviceClass.VideoCapture);
             var device = devices[0];
             var capture = new MediaCapture();
@@ -61,16 +62,17 @@ namespace HoloFaceSamples
                     return;
 
                 //coution! face detect is only supported 'BitmapPixelFormat.Gray8'.
-                var videoFrame = new VideoFrame(BitmapPixelFormat.Gray8, (int) properties.Width, (int) properties.Height);
+                var videoFrame = new VideoFrame(BitmapPixelFormat.Gray8, (int)properties.Width, (int)properties.Height);
 
-                this.FrameSizeWidth = (int) properties.Width;
-                this.FrameSizeHeight = (int) properties.Height;
+                this.FrameSizeWidth = (int)properties.Width;
+                this.FrameSizeHeight = (int)properties.Height;
 
 
                 var previewFrame = await _capture.GetPreviewFrameAsync(videoFrame);
 
                 var detector = await FaceDetector.CreateAsync();
                 var detectFaces = await detector.DetectFacesAsync(previewFrame.SoftwareBitmap);
+                System.Diagnostics.Debug.WriteLine(detectFaces.ToString());
                 var faceInformations = detectFaces.Select(x => new FaceInformation
                 {
                     X = x.FaceBox.X,

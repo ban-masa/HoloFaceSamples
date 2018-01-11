@@ -19,6 +19,7 @@ internal class UWPDefaultBridgeServiceManager : IUWPBridgeServiceManager
         lock (LockObject)
         {
             if (_serviceCollection == null)
+                System.Diagnostics.Debug.WriteLine("constructor");
                 _serviceCollection = new List<IUWPBridgeService>();
         }
     }
@@ -30,6 +31,7 @@ internal class UWPDefaultBridgeServiceManager : IUWPBridgeServiceManager
     /// <param name="service">instance of service</param>
     public void AddService<T>(IUWPBridgeService service) where T : IUWPBridgeService
     {
+        System.Diagnostics.Debug.WriteLine("add_service");
         lock (LockObject)
         {
             _serviceCollection.Add(service);
@@ -43,6 +45,9 @@ internal class UWPDefaultBridgeServiceManager : IUWPBridgeServiceManager
     /// <returns>object</returns>
     public T GetService<T>() where T : class, IUWPBridgeService
     {
+        System.Diagnostics.Debug.WriteLine("get_service");
+        var temp = _serviceCollection.FirstOrDefault(x => x is T) as T;
+        System.Diagnostics.Debug.WriteLine(temp.ToString());
         return _serviceCollection.FirstOrDefault(x => x is T) as T;
     }
 }
